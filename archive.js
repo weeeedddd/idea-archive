@@ -148,21 +148,3 @@ Dungeons:[
 ['Optional hard modes with cosmetic-only rewards','A harder version of a dungeon that rewards style items only.','M','Higher mob stats and cosmetic-only drops'],
 ['Time-trial runs with a weekly leaderboard','Race through a dungeon for the fastest time each week.','E','Timer plus a leaderboard in a database']]
 };
-const LEVEL={E:'Easy',M:'Medium',H:'Hard'};
-const allIdeas=[];for(const [category,items] of Object.entries(groups))for(const [title,desc,lvl,how] of items)allIdeas.push({category,title,desc,level:LEVEL[lvl],how,id:allIdeas.length+1});
-let category='All',level='Any',expanded=false;
-const filters=document.querySelector('#filters'),levels=document.querySelector('#levels');
-function chip(parent,name,onPick){const button=document.createElement('button');button.type='button';button.className='filter';button.textContent=name;button.addEventListener('click',()=>{onPick(name);expanded=false;renderIdeas()});parent.append(button)}
-['All',...Object.keys(groups)].forEach(n=>chip(filters,n,v=>category=v));
-['Any',...Object.values(LEVEL)].forEach(n=>chip(levels,n,v=>level=v));
-function renderIdeas(){
-const query=document.querySelector('#search').value.trim().toLowerCase();
-const matches=allIdeas.filter(i=>(category==='All'||i.category===category)&&(level==='Any'||i.level===level)&&`${i.title} ${i.desc} ${i.how} ${i.category}`.toLowerCase().includes(query));
-const visible=expanded?matches:matches.slice(0,12);
-const container=document.querySelector('#ideas');container.replaceChildren();
-visible.forEach(i=>{const article=document.createElement('article');article.className='idea';const number=document.createElement('span');number.textContent=String(i.id).padStart(3,'0');const content=document.createElement('div');const label=document.createElement('small');label.textContent=i.category;const badge=document.createElement('em');badge.className='lvl lvl-'+i.level.toLowerCase();badge.textContent=i.level;label.append(badge);const title=document.createElement('p');title.className='t';title.textContent=i.title;const desc=document.createElement('p');desc.className='d';desc.textContent=i.desc;const how=document.createElement('p');how.className='how';how.textContent='How: '+i.how;content.append(label,title,desc,how);article.append(number,content);container.append(article)});
-for(const [group,current] of [[filters,category],[levels,level]])[...group.children].forEach(b=>{const on=b.textContent===current;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});
-document.querySelector('#count').textContent=`Showing ${visible.length} of ${matches.length} ideas`;
-const more=document.querySelector('#more');more.hidden=matches.length<=12;more.textContent=expanded?'Show fewer ideas':`Explore all ${matches.length} ideas`;
-document.querySelector('#empty').hidden=matches.length>0;document.querySelector('#reset').hidden=matches.length>0;}
-document.querySelector('#more').addEventListener('click',()=>{expanded=!expanded;renderIdeas()});document.querySelector('#search').addEventListener('input',()=>{expanded=false;renderIdeas()});document.querySelector('#reset').addEventListener('click',()=>{category='All';level='Any';expanded=false;document.querySelector('#search').value='';renderIdeas();document.querySelector('#search').focus()});renderIdeas();
