@@ -1,7 +1,7 @@
 const LEVEL={E:'Easy',M:'Medium',H:'Hard'};
 const T={
 en:{
- cat:{All:'All',World:'World',Combat:'Combat',Character:'Character',Crafting:'Crafting',Community:'Community',Adventure:'Adventure',Dungeons:'Dungeons',Quests:'Quests',Classes:'Classes',Economy:'Economy',Housing:'Housing',Pets:'Pets & mounts',Events:'Events',PvP:'PvP',Interface:'Interface',Server:'Server'},
+ cat:{All:'All',World:'World',Combat:'Combat',Character:'Character',Crafting:'Crafting',Community:'Community',Adventure:'Adventure',Dungeons:'Dungeons',Quests:'Quests',Classes:'Classes',Economy:'Economy',Housing:'Housing',Pets:'Pets & mounts',Events:'Events',PvP:'PvP',Interface:'Interface',Server:'Server',Mobility:'Mobility',Military:'Military',Factions:'Factions',Expeditions:'Expeditions'},
  lvl:{Any:'Any',Easy:'Easy',Medium:'Medium',Hard:'Hard'},
  how:'How: ',count:(a,b)=>`Showing ${a} of ${b} ideas`,resCount:a=>`${a} ideas with votes`,more:n=>`Explore all ${n} ideas`,less:'Show fewer ideas',
  title:'Idea Archive — 140 RPG server ideas',
@@ -25,7 +25,7 @@ en:{
   search:'Search ideas',meta:'Explore the possibilities',reset:'Clear filters',empty:'No matching ideas. Try another search or clear your filters.',
   foot1:'An independent concept collection. Not affiliated with Minecraft, Mojang, Purpur or any other game or brand.',foot2:'Ideas only, not a live game server.'}},
 de:{
- cat:{All:'Alle',World:'Welt',Combat:'Kampf',Character:'Charakter',Crafting:'Handwerk',Community:'Community',Adventure:'Abenteuer',Dungeons:'Dungeons',Quests:'Quests',Classes:'Klassen',Economy:'Wirtschaft',Housing:'Wohnen',Pets:'Haustiere & Reittiere',Events:'Events',PvP:'PvP',Interface:'Interface',Server:'Server'},
+ cat:{All:'Alle',World:'Welt',Combat:'Kampf',Character:'Charakter',Crafting:'Handwerk',Community:'Community',Adventure:'Abenteuer',Dungeons:'Dungeons',Quests:'Quests',Classes:'Klassen',Economy:'Wirtschaft',Housing:'Wohnen',Pets:'Haustiere & Reittiere',Events:'Events',PvP:'PvP',Interface:'Interface',Server:'Server',Mobility:'Mobilität',Military:'Militär',Factions:'Fraktionen',Expeditions:'Expeditionen'},
  lvl:{Any:'Alle',Easy:'Einfach',Medium:'Mittel',Hard:'Schwer'},
  how:'Umsetzung: ',count:(a,b)=>`${a} von ${b} Ideen`,resCount:a=>`${a} Ideen mit Stimmen`,more:n=>`Alle ${n} Ideen ansehen`,less:'Weniger Ideen anzeigen',
  title:'Ideenarchiv — 140 Ideen für einen RPG-Server',
@@ -67,6 +67,9 @@ function addIdea(cat,title,desc,lvl,how,d){
 }
 for(const [cat,items] of Object.entries(groups))for(const [t,d,l,h] of items){const id=allIdeas.length;addIdea(cat,t,d,l,h,(typeof DE!=='undefined')&&DE[id])}
 if(typeof MORE!=='undefined')for(const [cat,items] of Object.entries(MORE))items.forEach(([t,d,l,h],i)=>addIdea(cat,t,d,l,h,(typeof MORE_DE!=='undefined')&&MORE_DE[cat]&&MORE_DE[cat][i]));
+
+if(typeof MORE2!=='undefined')for(const [cat,items] of Object.entries(MORE2))items.forEach(([t,d,l,h],i)=>addIdea(cat,t,d,l,h,(typeof MORE2_DE!=='undefined')&&MORE2_DE[cat]&&MORE2_DE[cat][i]));
+if(window.LONG){const m=new Map(LONG.map(x=>[x[0],x]));allIdeas.forEach(i=>{const l=m.get(i.en.title);if(l){i.en.desc=l[1];i.de.desc=l[2]}})}
 
 /* ---------- small helpers ---------- */
 function el(tag,props={},...kids){const e=document.createElement(tag);for(const [k,v] of Object.entries(props)){if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v)}e.append(...kids);return e}
