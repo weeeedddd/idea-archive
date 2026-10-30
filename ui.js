@@ -44,9 +44,10 @@ function chip(parent,name,onPick){const button=document.createElement('button');
 ['All',...Object.keys(groups)].forEach(n=>chip(filters,n,v=>category=v));
 ['Any',...Object.values(LEVEL)].forEach(n=>chip(levels,n,v=>level=v));
 function applyStatic(){
- const t=T[lang];document.documentElement.lang=lang;document.title=t.title;
- const md=document.querySelector('meta[name=description]');if(md)md.content=t.desc;
- document.querySelectorAll('[data-i18n]').forEach(el=>{const v=t.ui[el.dataset.i18n];if(v===undefined)return;if(el.dataset.html)el.innerHTML=v;else el.textContent=v});
+ const t=T[lang],f=s=>typeof s==='string'?s.replace(/140/g,allIdeas.length):s;
+ document.documentElement.lang=lang;document.title=f(t.title);
+ const md=document.querySelector('meta[name=description]');if(md)md.content=f(t.desc);
+ document.querySelectorAll('[data-i18n]').forEach(el=>{const v=f(t.ui[el.dataset.i18n]);if(v===undefined)return;if(el.dataset.html)el.innerHTML=v;else el.textContent=v});
  document.querySelector('#search').placeholder=t.placeholder;
  [...filters.children].forEach(b=>b.textContent=t.cat[b.dataset.k]);
  [...levels.children].forEach(b=>b.textContent=t.lvl[b.dataset.k]);
